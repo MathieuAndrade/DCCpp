@@ -110,6 +110,13 @@ void DCCpp::loop()
 		progMonitor.check();
 	}
 
+	#ifdef USE_S88
+	// if sufficient time has elapsed since last update, scan 8 S88 sensors in a row
+	if (S88::checkTime()) {  
+		S88::check();
+	}
+	#endif
+
 #ifdef USE_SENSOR
 	Sensor::check();    // check sensors for activated or not
 #endif
@@ -217,6 +224,10 @@ void DCCpp::begin()
 		EEStore::store();
 #endif
 
+#ifdef USE_S88
+	S88::init();                                          // initialize S88 signal
+#endif
+
 #ifdef DCCPP_DEBUG_MODE
 	//pinMode(LED_BUILTIN, OUTPUT);
 	Serial.println(F("begin achieved"));
@@ -262,6 +273,7 @@ void DCCpp::showConfiguration()
 	Serial.print(F("VERSION DCC++:      "));
 	Serial.println(VERSION);
 	Serial.println(F(DCCPP_LIBRARY_VERSION));
+	Serial.println(F(S88_VERSION));
 	Serial.print(F("COMPILED:     "));
 	Serial.print(__DATE__);
 	Serial.print(F(" "));
@@ -333,6 +345,10 @@ void DCCpp::showConfiguration()
 #if defined(USE_OUTPUT)
 	Serial.print(F("     OUTPUTS: "));
 	Serial.println(EEStore::data.nOutputs);
+#endif
+#if defined(USE_S88)
+    Serial.print(F("     S88   M: "));
+    Serial.println(EEStore::data.nS88);
 #endif
 #endif
 
