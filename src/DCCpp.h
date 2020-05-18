@@ -443,7 +443,7 @@ Main include file of the library.*/
 // The function DCCpp::showConfiguration()
 // is very heavy in program memory. So to avoid problems
 // you can make this function available by uncomment the next line, only when necessary.
-//#define DCCPP_PRINT_DCCPP
+#define DCCPP_PRINT_DCCPP
 
 ///////////////////////////////////////////////////////
 // This define gets rid of 2 timers and uses only Timer2 to tick every 58us and change logic levels on both tracks. 
@@ -458,12 +458,12 @@ Main include file of the library.*/
 //  Inclusion area
 //
 
-//#define USE_TURNOUT
+#define USE_TURNOUT
 //#define USE_EEPROM
-//#define USE_OUTPUT
-//#define USE_S88
+#define USE_OUTPUT
+#define USE_S88
 //#define USE_SENSOR // not compatible with USE_S88
-//#define USE_TEXTCOMMAND
+#define USE_TEXTCOMMAND
 //#define USE_ETHERNET_WIZNET_5100
 //#define USE_ETHERNET_WIZNET_5500
 //#define USE_ETHERNET_WIZNET_5200
