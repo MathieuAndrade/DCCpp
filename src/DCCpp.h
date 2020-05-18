@@ -461,7 +461,8 @@ Main include file of the library.*/
 //#define USE_TURNOUT
 //#define USE_EEPROM
 //#define USE_OUTPUT
-//#define USE_SENSOR
+//#define USE_S88
+//#define USE_SENSOR // not compatible with USE_S88
 //#define USE_TEXTCOMMAND
 //#define USE_ETHERNET_WIZNET_5100
 //#define USE_ETHERNET_WIZNET_5500
@@ -480,6 +481,8 @@ Main include file of the library.*/
     /**Comment this line to avoid using and compiling Sensors.*/
     #define USE_SENSOR
 		/**Comment this line to avoid using and compiling Serial commands.*/
+    #define USE_S88
+    /**Comment this line to avoid using and compiling Serial commands.*/
 		#define USE_TEXTCOMMAND
 		/**Comment this line to avoid using and compiling Ethernet shield using Wiznet 5100 chip (Arduino Shield v1).*/
 		#define USE_ETHERNET_WIZNET_5100
@@ -545,6 +548,9 @@ Main include file of the library.*/
 #endif
 #ifdef USE_SENSOR
 #include "Sensor.h"
+#endif
+#ifdef USE_S88
+#include "S88.h"
 #endif
 #ifdef USE_TEXTCOMMAND
 #include "TextCommand.h"

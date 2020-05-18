@@ -102,6 +102,32 @@ bool TextCommand::parse(char *com){
 
   switch(com[0]){
 
+	/***** Retro-signalisation S88 *****/
+	#ifdef USE_S88      // decode XBPC command
+		case 'Q':       // <Q>
+		com[1] = ' ';
+		com[2] = '6';
+		com[3] = '4';
+		com[4] = ' ';
+		com[5] = '3';
+		com[6] = 0;
+		case 'Y':       // <Y Nb_S88_Modules DataFormat> for initialisation or <Y> for occupation feedback
+		/*
+		*   <Y Nb_S88_Bytes DataFormat>:            sets Nb_S88_Modules read with output DataFormat
+		*   <Y>                                     provide occupation feedback
+		*  
+		*   Nb_S88_Bytes: the byte number (0-64) to read
+		*   DataFormat: 0 (Binary) 1 (Hexadecimal)
+		*  
+		*   returns: <o status>, then <y S88_Bytes> or <q/Q n>
+		*  
+		*   *** SEE S88.CPP FOR COMPLETE INFO ON THE DIFFERENT VARIATIONS OF THE "Y" COMMAND
+		*   used to define S88 retrosignalisation definitions
+		*/
+		S88::parse(com+1);
+		break;
+	#endif
+
 	case 't':       
 		/**	\addtogroup commandsGroup
 		SET ENGINE THROTTLES USING 128-STEP SPEED CONTROL
@@ -246,6 +272,7 @@ bool TextCommand::parse(char *com){
 	  return Sensor::parse(com+1);	  
 
 #ifdef DCCPP_PRINT_DCCPP
+#ifndef USE_S88
 	case 'Q':
 		/**	\addtogroup commandsGroup
 		SHOW STATUS OF ALL SENSORS
@@ -262,6 +289,7 @@ bool TextCommand::parse(char *com){
 
 	  Sensor::status();
 		return true;
+#endif
 #endif
 #endif
 
@@ -552,15 +580,31 @@ bool TextCommand::parse(char *com){
 	 
 		EEStore::store();
 		DCCPP_INTERFACE.print("<e ");
-		DCCPP_INTERFACE.print(EEStore::data.nTurnouts);
-		DCCPP_INTERFACE.print(" ");
-		DCCPP_INTERFACE.print(EEStore::data.nSensors);
-		DCCPP_INTERFACE.print(" ");
-		DCCPP_INTERFACE.print(EEStore::data.nOutputs);
+
+		#ifdef USE_TURNOUT
+			DCCPP_INTERFACE.print(EEStore::data.nTurnouts);
+			DCCPP_INTERFACE.print(" ");
+		#endif
+		#ifdef USE_SENSOR
+			DCCPP_INTERFACE.print(EEStore::data.nSensors);
+			DCCPP_INTERFACE.print(" ");
+		#endif
+		#ifdef USE_OUTPUT
+			DCCPP_INTERFACE.print(EEStore::data.nOutputs);
+			DCCPP_INTERFACE.print(" ");
+		#endif
+
 		DCCPP_INTERFACE.print(">");
-#if !defined(USE_ETHERNET)
-		DCCPP_INTERFACE.println("");
-#endif
+
+		#if !defined(USE_ETHERNET)
+			DCCPP_INTERFACE.println("");
+		#endif
+
+		#ifdef USE_S88
+			DCCPP_INTERFACE.print(EEStore::data.nS88);
+			DCCPP_INTERFACE.print(">");
+		#endif
+
 		return true;
 
 	case 'e':     
