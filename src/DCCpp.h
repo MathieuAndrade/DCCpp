@@ -257,6 +257,12 @@ where NumPort is a port number.
 WARNING: if this line is not present, some errors will be raised during compilation, like "undefined reference to `eServer'" !
 
 \page revPage Revision History
+\par 19/05/2020 V1.4.2
+- Ajout du support S88.
+_______________
+- Add S88 support.
+
+\page revPage Revision History
 \par 02/04/2020 V1.4.1
 - Correction des pinMode qui n'étaient pas faits en ESP32.
 _______________
@@ -427,7 +433,7 @@ _______________
 /** @file DCCpp.h
 Main include file of the library.*/
 
-#define DCCPP_LIBRARY_VERSION		"VERSION DCCpp library: 1.4.1"
+#define DCCPP_LIBRARY_VERSION		"VERSION DCCpp library: 1.4.2"
 
 ////////////////////////////////////////////////////////
 // Add a '//' at the beginning of the line to be in production mode.
